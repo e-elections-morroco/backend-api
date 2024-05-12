@@ -102,7 +102,7 @@ def write_encodings_to_csv(encodings_dict:dict, csv_filename:Path)->None:
         for image_name, embedding in encodings_dict.items():
             writer.writerow([image_name, embedding])
 
-def add_encoding_to_csv(image_name: str, encoding: np.ndarray, csv_filename: Path) -> None:
+def add_encoding_to_csv(image_name: str, encoding: np.ndarray, csv_filename: Path) -> bool:
     """
     Add a new encoding to an existing CSV file.
 
@@ -115,17 +115,24 @@ def add_encoding_to_csv(image_name: str, encoding: np.ndarray, csv_filename: Pat
         None
     """
     # Convert the encoding array to a string representation
+    try:
+        # Check if the CSV file exists
+        if not csv_filename.exists():
+            # If the CSV file doesn't exist, create it and write the header
+            with open(csv_filename, mode='w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(['Image Name', 'Encoding'])
+            print(f"Created CSV file: {csv_filename}")
 
-    # Check if the CSV file exists
-    if not csv_filename.exists():
-        print("Error: CSV file does not exist.")
-        return
-
-    # Append the new encoding to the CSV file
-    with open(csv_filename, mode='a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([image_name, encoding])
-    print(f"Encoding added to {csv_filename}")
+        # Append the new encoding to the CSV file
+        with open(csv_filename, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([image_name, encoding])  # Convert the encoding array to a list
+        print(f"Encoding added to {csv_filename}")
+        return True
+    except Exception as e:
+        print(f"Error adding encoding to CSV: {e}")
+        return False
 
 
 if __name__=="__main__":
