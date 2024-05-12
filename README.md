@@ -1,13 +1,12 @@
 
 
-# Project Title
+# e-elections
 
-Brief description of the project.
+The e-elections project aims to provide a comprehensive backend API solution for various election-related functionalities. Leveraging modern technologies such as FastAPI, Langchain, and computer vision, the system facilitates tasks like face detection, chatbot interaction, and data management.
 
 ## Description
 
-More detailed description of the project, including its purpose, features, and technologies used.
-
+This project serves as the backbone for e-elections applications, offering a robust and scalable API architecture. It enables seamless integration of features like face detection for identity verification, chatbot assistance for user inquiries, and efficient data handling for election management.
 ## Installation
 
 ```bash
@@ -60,3 +59,44 @@ $ uvicorn main:app --host 127.0.0.1 --port 5000 --reload
     - **Description:** An internal server error occurred during processing.
 
 
+### `/api/image/is-valid`
+
+This endpoint checks whether an uploaded image is valid by performing basic checks like file extension and face detection.
+
+#### Request
+
+- **Method:** GET
+- **URL:** `/api/image/is-valid`
+- **Query Parameters:** None
+- **Request Body:**
+  - `image`: (multipart/form-data) - The image file to be validated.
+
+#### Responses
+
+- **Successful Response:**
+  - **Status Code:** 200
+  - **Content:** 
+    ```json
+    {
+      "valid_image": true
+    }
+    ```
+  - **Description:** The image is valid. A face was detected in the image.
+
+- **Error Responses:**
+  - **Status Code:** 400
+    - **Content:** 
+      ```json
+      {
+        "detail": "Invalid image format. Supported formats: jpg, jpeg, png"
+      }
+      ```
+    - **Description:** The uploaded image has an invalid format. Supported formats are jpg, jpeg, and png.
+  - **Status Code:** 500
+    - **Content:** 
+      ```json
+      {
+        "detail": "Internal Server Error"
+      }
+      ```
+    - **Description:** An internal server error occurred during processing.

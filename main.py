@@ -70,7 +70,30 @@ async def save_image(image: UploadFile = File(...), cin: str = Form(...)):
 
 
 
+@api_router.get("/image/is-valid")
+async def is_valid_image(image: UploadFile = File(...)):
+    
+    # Check if the temporary folder exists, create it if not
+    create_folder("temp")
+    create_folder("data")
 
+    # Check if the uploaded file has a valid image extension
+    allowed_extensions = ('.jpg', '.jpeg', '.png')
+    file_extension = Path(image.filename).suffix.lower()
+    if file_extension not in allowed_extensions:
+        raise HTTPException(status_code=400, detail="Invalid image format. Supported formats: jpg, jpeg, png")
+
+    # Save the uploaded image
+    with open(f"temp/{image.filename}", "wb") as buffer:
+        shutil.copyfileobj(image.file, buffer)
+    
+    # Perform image processing or any other operations here
+    # For example, you can call your computer vision functions here
+    valid_image:bool=detect_person_with_face_eyes_nose_mouth(Path(f"temp/{image.filename}"))
+    # Remove the temporary image file
+    os.remove(f"temp/{image.filename}")
+
+    return {"valid_image": valid_image}
 
 
 
