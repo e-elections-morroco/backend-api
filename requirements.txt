@@ -1,6 +1,13 @@
-# FAST APU
-fastapi
+# Fast API
 uvicorn
+fastapi[all]
+python-multipart
+# LangChain and LLM
+langchain
+PyPDF2
+pypdf
+vertexai 
+langchain_google_genai
 
 # Computer Vision
 opencv-python
