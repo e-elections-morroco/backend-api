@@ -152,7 +152,13 @@ This endpoint checks whether an uploaded image is valid by performing basic chec
     - **Description:** An internal server error occurred during processing.
 
 
+## Contributing
 
+Contributions to this project are welcome! If you have any ideas, suggestions, or bug fixes, feel free to open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the GPL License. See the [LICENSE](LICENSE) file for details.
 
 
 
