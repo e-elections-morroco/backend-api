@@ -100,3 +100,62 @@ This endpoint checks whether an uploaded image is valid by performing basic chec
       }
       ```
     - **Description:** An internal server error occurred during processing.
+
+
+### `/api/image/check-face`
+
+#### Request
+
+- **Method:** GET
+- **URL:** `/api/image/check-face`
+- **Query Parameters:** None
+- **Request Body:**
+  - `image`: (multipart/form-data) - The image file to be checked.
+  - `cin`: (form) - The Customer Identification Number (CIN) associated with the image. Must be between 5 and 10 characters long.
+
+#### Responses
+
+- **Successful Response:**
+  - **Status Code:** 200
+  - **Content:** 
+    ```json
+    {
+      "valid_image": true
+    }
+    ```
+  - **Description:** The face in the uploaded image matches a face encoding stored in the system.
+
+- **Error Responses:**
+  - **Status Code:** 400
+    - **Content:** 
+      ```json
+      {
+        "detail": "CIN length must be less than 10 characters"
+      }
+      ```
+    - **Description:** The length of the CIN provided in the request is greater than or equal to 10 characters.
+  - **Status Code:** 400
+    - **Content:** 
+      ```json
+      {
+        "detail": "Invalid image format. Supported formats: jpg, jpeg, png"
+      }
+      ```
+    - **Description:** The uploaded image has an invalid format. Supported formats are jpg, jpeg, and png.
+  - **Status Code:** 500
+    - **Content:** 
+      ```json
+      {
+        "detail": "Internal Server Error"
+      }
+      ```
+    - **Description:** An internal server error occurred during processing.
+
+
+
+
+
+
+
+
+

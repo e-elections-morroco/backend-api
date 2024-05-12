@@ -75,12 +75,14 @@ def compare_face_use_csv_encoding(known_image_name: str, unknown_image_path: Pat
         return None
     try:
         known_encoding = get_image_encoding_from_csv(known_image_name, csv_filename)
+        if known_encoding is None:
+            return False
         unknown_encoding = get_image_encoding(unknown_image_path)
         results = face_recognition.compare_faces([known_encoding], unknown_encoding)
         return True if str(results[0])== "True" else False
     except IndexError:
         print("No faces detected in one of the images.")
-        return None
+        return False
 
 
 
