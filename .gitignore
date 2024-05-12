@@ -1,0 +1,5 @@
+venv
+*.env
+main.txt
+yolo*
+backend-api

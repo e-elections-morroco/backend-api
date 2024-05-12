@@ -1,0 +1,8 @@
+# FAST APU
+fastapi
+uvicorn
+
+# Computer Vision
+opencv-python
+face-recognition
+numpy
