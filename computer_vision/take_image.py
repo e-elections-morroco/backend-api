@@ -8,10 +8,14 @@ from pathlib import Path
 parent_dir = os.path.abspath(os.path.join(os.getcwd(), '.'))
 sys.path.append(parent_dir)
 
+
 def take_image(image_path: Path = Path(("temp/captured_photo.jpg"))):
     # Load pre-trained face and eye cascade classifiers
+    # Load the Haar cascades for face, eyes, nose, and mouth
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
+    nose_cascade = cv2.CascadeClassifier('haarcascade_mcs_nose.xml')
+    mouth_cascade = cv2.CascadeClassifier( 'haarcascade_mcs_mouth.xml')
 
     # Initialize video capture
     cap = cv2.VideoCapture(0)
@@ -26,6 +30,8 @@ def take_image(image_path: Path = Path(("temp/captured_photo.jpg"))):
         # Detect faces in the grayscale frame
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 
+        var= True
+
         # Check if exactly one face is detected
         if len(faces) == 1:
             # Get the coordinates and dimensions of the face
@@ -37,9 +43,30 @@ def take_image(image_path: Path = Path(("temp/captured_photo.jpg"))):
 
             # Detect eyes in the face ROI
             eyes = eye_cascade.detectMultiScale(roi_gray)
+            if len(faces) != 1:
+                var= False
+    
+            # Extract the region of interest (ROI) for the detected face
+            x, y, w, h = faces[0]
+            face_roi = gray[y:y+h, x:x+w]
+
+            # Detect eyes in the face region
+            eyes = eye_cascade.detectMultiScale(face_roi)
+            if len(eyes) != 2:
+                var= False
+            
+            # Detect nose in the face region
+            noses = nose_cascade.detectMultiScale(face_roi)
+            if len(noses) !=1:
+                var= False
+            
+            # Detect mouth in the face region
+            mouths = mouth_cascade.detectMultiScale(face_roi)
+            if len(mouths) != 1:
+                var= False
 
             # If both eyes are detected, take a photo and close the video capture
-            if len(eyes) >= 2:
+            if var:
                 cv2.imwrite(str(image_path), frame)
                 cap.release()
                 cv2.destroyAllWindows()
@@ -57,7 +84,7 @@ def take_image(image_path: Path = Path(("temp/captured_photo.jpg"))):
     cv2.destroyAllWindows()
 
 
-def detect_person_with_face_eyes_nose_mouth(image_path: Path)->bool:
+def detect_person_with_face_eyes_nose_mouth(image_path: Path) -> bool:
     """
     Detects a person in an image based on the presence of a face, eyes, nose, and mouth.
 
@@ -75,8 +102,8 @@ def detect_person_with_face_eyes_nose_mouth(image_path: Path)->bool:
     # Load the Haar cascades for face, eyes, nose, and mouth
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
-    nose_cascade = cv2.CascadeClassifier('computer_vision/haarcascade_mcs_nose.xml')
-    mouth_cascade = cv2.CascadeClassifier('computer_vision/haarcascade_mcs_mouth.xml')
+    nose_cascade = cv2.CascadeClassifier('haarcascade_mcs_nose.xml')
+    mouth_cascade = cv2.CascadeClassifier( 'haarcascade_mcs_mouth.xml')
     
     # Check if cascades are loaded properly
     if face_cascade.empty() or eye_cascade.empty() or nose_cascade.empty() or mouth_cascade.empty():
@@ -94,32 +121,24 @@ def detect_person_with_face_eyes_nose_mouth(image_path: Path)->bool:
     if len(faces) != 1:
         return False
     
+    # Extract the region of interest (ROI) for the detected face
+    x, y, w, h = faces[0]
+    face_roi = gray[y:y+h, x:x+w]
+
     # Detect eyes in the face region
-    for (x,y,w,h) in faces:
-        roi_gray = gray[y:y+h, x:x+w]
-        eyes = eye_cascade.detectMultiScale(roi_gray)
-        
-        # Check if eyes are present
-        if len(eyes) == 0:
-            return False
+    eyes = eye_cascade.detectMultiScale(face_roi)
+    if len(eyes) != 2:
+        return False
     
     # Detect nose in the face region
-    for (x,y,w,h) in faces:
-        roi_gray = gray[y:y+h, x:x+w]
-        noses = nose_cascade.detectMultiScale(roi_gray)
-        
-        # Check if nose is present
-        if len(noses) == 0:
-            return False
+    noses = nose_cascade.detectMultiScale(face_roi)
+    if len(noses) !=1:
+        return False
     
     # Detect mouth in the face region
-    for (x,y,w,h) in faces:
-        roi_gray = gray[y:y+h, x:x+w]
-        mouths = mouth_cascade.detectMultiScale(roi_gray)
-        
-        # Check if mouth is present
-        if len(mouths) == 0:
-            return False
+    mouths = mouth_cascade.detectMultiScale(face_roi)
+    if len(mouths) != 1:
+        return False
     
     return True
 
