@@ -1,7 +1,7 @@
 
 
 # e-elections
-
+![Face Recognition System](./docs/api-image.png)
 The e-elections project aims to provide a comprehensive backend API solution for various election-related functionalities. Leveraging modern technologies such as FastAPI, Langchain, and computer vision, the system facilitates tasks like face detection, chatbot interaction, and data management.
 
 ## Description
