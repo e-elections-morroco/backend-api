@@ -13,3 +13,6 @@ langchain_google_genai
 opencv-python
 face-recognition
 numpy
+
+# environment
+python-dotenv
