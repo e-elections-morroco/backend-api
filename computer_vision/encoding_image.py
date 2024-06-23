@@ -11,7 +11,7 @@ from pathlib import Path
 
 import numpy as np
 
-def get_image_encoding(image_path: Path) -> list | None:
+def get_image_encoding(image_path: Path) -> list:
     """
     Get face encoding from an image.
 
