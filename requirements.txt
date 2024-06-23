@@ -16,3 +16,5 @@ numpy
 
 # environment
 python-dotenv
+langchain_community
+
