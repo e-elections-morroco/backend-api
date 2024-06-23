@@ -11,7 +11,7 @@ from pathlib import Path
 from computer_vision.encoding_image import get_image_encoding,get_image_encoding_from_csv
 
 
-def compare_faces(known_image_path: Path, unknown_image_path: Path) -> bool | None:
+def compare_faces(known_image_path: Path, unknown_image_path: Path) -> bool:
     """
     Compare faces in two images.
 
@@ -47,7 +47,7 @@ def compare_faces(known_image_path: Path, unknown_image_path: Path) -> bool | No
         return None
 
 
-def compare_face_use_csv_encoding(known_image_name: str, unknown_image_path: Path, csv_filename: Path) -> bool | None:
+def compare_face_use_csv_encoding(known_image_name: str, unknown_image_path: Path, csv_filename: Path) -> bool :
     """
     Compare faces in an image with known faces in a CSV file.
 

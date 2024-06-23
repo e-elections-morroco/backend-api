@@ -44,7 +44,7 @@ def get_image_encoding(image_path: Path) -> list:
         print("No face detected in the image.")
         return None
 
-def get_image_encoding_from_csv(image_name: str, csv_filename: Path) -> list | None:
+def get_image_encoding_from_csv(image_name: str, csv_filename: Path) -> list :
     """
     Get image encoding from a CSV file for a specific image.
 
@@ -88,7 +88,7 @@ def extract_encodings(image_folder:Path) -> dict:
                 print(f"No face detected in {image_name}")
     return encodings_dict
 
-def write_encodings_to_csv(encodings_dict:dict, csv_filename:Path)->None:
+def write_encodings_to_csv(encodings_dict:dict, csv_filename:Path):
     """
     Write encodings dictionary to a CSV file.
 

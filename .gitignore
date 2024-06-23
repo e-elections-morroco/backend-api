@@ -3,3 +3,5 @@ main.txt
 yolo*
 backend-api
 *.env
+Dockerfile
+*.txt
