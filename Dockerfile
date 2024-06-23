@@ -14,11 +14,9 @@ RUN rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-COPY requirements.txt requirements1.txt requirements2.txt .
+COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir -r requirements1.txt
-RUN pip install --no-cache-dir -r requirements2.txt
 
 COPY . .
 
