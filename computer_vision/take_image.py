@@ -102,8 +102,8 @@ def detect_person_with_face_eyes_nose_mouth(image_path: Path) -> bool:
     # Load the Haar cascades for face, eyes, nose, and mouth
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
-    nose_cascade = cv2.CascadeClassifier('haarcascade_mcs_nose.xml')
-    mouth_cascade = cv2.CascadeClassifier( 'haarcascade_mcs_mouth.xml')
+    nose_cascade = cv2.CascadeClassifier('./computer_vision/haarcascade_mcs_nose.xml')
+    mouth_cascade = cv2.CascadeClassifier( './computer_vision/haarcascade_mcs_mouth.xml')
     
     # Check if cascades are loaded properly
     if face_cascade.empty() or eye_cascade.empty() or nose_cascade.empty() or mouth_cascade.empty():
@@ -112,6 +112,10 @@ def detect_person_with_face_eyes_nose_mouth(image_path: Path) -> bool:
 
     # Load the image
     img = cv2.imread(str(image_path))
+    if img is None:
+        print("Error: Failed to load image.")
+        return False
+    
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # Detect faces in the image
@@ -127,17 +131,17 @@ def detect_person_with_face_eyes_nose_mouth(image_path: Path) -> bool:
 
     # Detect eyes in the face region
     eyes = eye_cascade.detectMultiScale(face_roi)
-    if len(eyes) != 2:
+    if len(eyes) < 2:
         return False
     
     # Detect nose in the face region
     noses = nose_cascade.detectMultiScale(face_roi)
-    if len(noses) !=1:
+    if len(noses) == 0:
         return False
     
     # Detect mouth in the face region
     mouths = mouth_cascade.detectMultiScale(face_roi)
-    if len(mouths) != 1:
+    if len(mouths) == 0:
         return False
     
     return True
