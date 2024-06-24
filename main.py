@@ -84,8 +84,8 @@ async def save_image(image: UploadFile = File(...), cin: str = Form(...)):
 
 
 
-@api_router.get("/image/is-valid")
-async def check_image(image: UploadFile = File(...),cin: str = Form(...)):
+@api_router.post("/image/is-valid")
+async def check_image(image: UploadFile = File(...)):
     
     # Check if the temporary folder exists, create it if not
     create_folder("temp")
