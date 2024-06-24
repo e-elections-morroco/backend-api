@@ -110,7 +110,7 @@ async def check_image(image: UploadFile = File(...)):
 
 
 
-@api_router.get("/image/check-face")
+@api_router.post("/image/check-face")
 async def save_image(image: UploadFile = File(...), cin: str = Form(...)):
     # Check if CIN length is less than 10
     if len(cin) >= 10 or len(cin) <5:
