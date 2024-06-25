@@ -9,9 +9,18 @@ from pathlib import Path
 import os
 import hashlib
 from llm.main import get_answer
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
+# Set up CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 # Create a router for API endpoints
 api_router = APIRouter(prefix="/api")
@@ -75,8 +84,8 @@ async def save_image(image: UploadFile = File(...), cin: str = Form(...)):
 
 
 
-@api_router.get("/image/is-valid")
-async def check_image(image: UploadFile = File(...),cin: str = Form(...)):
+@api_router.post("/image/is-valid")
+async def check_image(image: UploadFile = File(...)):
     
     # Check if the temporary folder exists, create it if not
     create_folder("temp")
@@ -101,7 +110,7 @@ async def check_image(image: UploadFile = File(...),cin: str = Form(...)):
 
 
 
-@api_router.get("/image/check-face")
+@api_router.post("/image/check-face")
 async def save_image(image: UploadFile = File(...), cin: str = Form(...)):
     # Check if CIN length is less than 10
     if len(cin) >= 10 or len(cin) <5:
