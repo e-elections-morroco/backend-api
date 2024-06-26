@@ -7,3 +7,4 @@ Dockerfile
 *.txt
 test.py
 *.sql
+*.html

@@ -10,7 +10,7 @@ import os
 import hashlib
 from llm.main import get_answer
 from fastapi.middleware.cors import CORSMiddleware
-
+from voice_helper.main import process_voice_command,VoiceBotRequest
 
 app = FastAPI()
 # Set up CORS
@@ -164,6 +164,15 @@ def answer_question(question: str):
     answer = get_answer(question)
     return {"answer": answer}
 
+@api_router.post("/voicebot")
+async def perform_action(request: VoiceBotRequest):
+    response = process_voice_command(
+        base64_audio_data=request.base64data,
+        provider=request.provider,
+        langue=request.langue,
+        host=request.database_ip
+    )
+    return response
 
 
 # Include the API router in the main app
