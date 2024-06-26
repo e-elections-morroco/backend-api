@@ -171,7 +171,55 @@ This endpoint checks whether an uploaded image is valid by performing basic chec
     - **Content:** `{ "detail": "Internal Server Error" }`
     - **Description:** An internal server error occurred during processing.
 
+### `api/email/vote-success`
 
+#### Request
+
+- **Method:** POST
+- **URL:** `/email/vote-success`
+- **Request Body:**
+  - `to`: (form) - The email address to send the verification email to.
+  - `firstname`: (form) - The first name of the person.
+  - `lastname`: (form) - The last name of the person.
+
+#### Responses
+
+- **Successful Response:**
+  - **Status Code:** 200
+  - **Content:** `{ "success": true }`
+  - **Description:** The email was successfully sent to the provided email address.
+
+- **Error Responses:**
+  - **Status Code:** 400
+    - **Content:** `{ "detail": "Failed to connect to gmail." }`
+    - **Description:** There was an error connecting to Gmail with the provided credentials.
+
+### `api/voicebot`
+
+#### Request
+
+- **Method:** POST
+- **URL:** `/voicebot`
+- **Request Body:**
+  - `base64data`: (string) - The base64 encoded audio data of the voice command.
+  - `provider`: (string) - The service provider for processing the voice command.
+  - `langue`: (string) - The language of the voice command.
+  - `database_ip`: (string) - The IP address of the database host.
+
+#### Responses
+
+- **Successful Response:**
+  - **Status Code:** 200
+  - **Content:** The response from processing the voice command.
+  - **Description:** The voice command was successfully processed and the appropriate action was taken.
+
+- **Error Responses:**
+  - **Status Code:** 400
+    - **Content:** `{ "detail": "Invalid request data" }`
+    - **Description:** The request data is invalid or incomplete.
+  - **Status Code:** 500
+    - **Content:** `{ "detail": "Internal Server Error" }`
+    - **Description:** An internal server error occurred during processing.
 
 ## Contributing
 
