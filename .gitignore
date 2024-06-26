@@ -5,3 +5,5 @@ backend-api
 *.env
 Dockerfile
 *.txt
+test.py
+*.sql
