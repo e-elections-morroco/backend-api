@@ -11,6 +11,16 @@ import hashlib
 from llm.main import get_answer
 from fastapi.middleware.cors import CORSMiddleware
 from voice_helper.main import process_voice_command,VoiceBotRequest
+from emails.main import (
+                            send_email_smtp,check_gmail_connection
+                            )
+from fastapi import HTTPException
+from dotenv import load_dotenv
+
+load_dotenv()
+
+EMAIL_PROJECT:str=os.getenv("EMAIL_PROJECT")
+PASSWORD_EMAIL_PROJECT:str=os.getenv("PASSWORD_EMAIL_PROJECT")
 
 app = FastAPI()
 # Set up CORS
@@ -174,6 +184,33 @@ async def perform_action(request: VoiceBotRequest):
     )
     return response
 
+
+@api_router.post("/email/vote-success")
+async def send_verification_email_code(to: str = Form(...),firstname:str=Form(...),lastname:str=Form(...)):
+    """
+    Send a verification code to the provided email address.
+    """
+    #Check the validity of email and password to connect to gmail
+    if not check_gmail_connection(EMAIL_PROJECT,PASSWORD_EMAIL_PROJECT):
+        raise HTTPException("Failed to connect to gmail.",4000)
+    email_subject:str="لقد تم التصويت بنجاح !"
+    email_body: str = f"""
+    <div style="direction: rtl; text-align: right;">
+        <h1>عزيزي {firstname} {lastname},</h1>
+        <p>نشكركم على التصويت في الانتخابات المغربية لعام 2026. نود إعلامكم أن تصويتكم قد تم بنجاح.</p>
+        <p>مع أطيب التحيات،</p>
+        <p>فريق الانتخابات المغربية</p>
+    </div>
+    """
+    is_send:bool=send_email_smtp(
+        sender_email=EMAIL_PROJECT,
+        sender_password=PASSWORD_EMAIL_PROJECT,
+        to=to,
+        email_subject=email_subject,
+        email_body=email_body
+    )
+
+    return {"success":is_send}  
 
 # Include the API router in the main app
 app.include_router(api_router)
