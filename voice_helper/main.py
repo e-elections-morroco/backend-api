@@ -4,8 +4,6 @@ import io
 import speech_recognition as sr
 import pyttsx3
 import pymysql
-from flask import Flask, jsonify, request
-from flask_cors import CORS
 import base64
 from pydub import AudioSegment
 from pydantic import BaseModel
